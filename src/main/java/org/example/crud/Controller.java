@@ -15,61 +15,77 @@ import java.util.List;
 public class Controller {
 
     private final List<Jacke> jacken = new ArrayList<>();
-    private int currentId = 1; // ID-Zähler
+    private int nextId = 1;
 
-    // CREATE
+    // Jacke erstellen
     @PostMapping
     public Jacke createJacke(@RequestBody Jacke neueJacke) {
-        neueJacke.setId(currentId++);
+        neueJacke.setId(nextId);
+        nextId = nextId + 1;
         jacken.add(neueJacke);
         return neueJacke;
     }
 
-    // READ - Alle Jacken
+    // Jacke updaten
+
+    @PutMapping("/{id}")
+    public Jacke updateJacke(@PathVariable int id, @RequestBody Jacke neueDaten) {
+        for (int i = 0; i < jacken.size(); i++) {
+            Jacke jacke = jacken.get(i);
+            if (jacke.getId() == id) {
+                jacke.setName(neueDaten.getName());
+                jacke.setBrand(neueDaten.getBrand());
+                jacke.setSize(neueDaten.getSize());
+                jacke.setColor(neueDaten.getColor());
+                jacke.setSeason(neueDaten.getSeason());
+                jacke.setReleaseYear(neueDaten.getReleaseYear());
+                return jacke;
+            }
+        }
+        throw new IllegalArgumentException("Jacke mit ID " + id + " nicht gefunden");
+    }
+    // delete
+
+    @DeleteMapping("/{id}")
+    public String deleteJacke(@PathVariable int id) {
+        for (int i = 0; i < jacken.size(); i++) {
+            Jacke jacke = jacken.get(i);
+            if (jacke.getId() == id) {
+                jacken.remove(i);
+                return "Jacke mit ID " + id + " gelöscht";
+            }
+        }
+        throw new IllegalArgumentException("Jacke mit ID " + id + " nicht gefunden");
+    }
+
+    // Alle Jacken anzeigen
     @GetMapping
     public List<Jacke> getAllJacken() {
         return jacken;
     }
 
-    // READ - Einzelne Jacke nach ID
+    // Jacke nach ID suchen
     @GetMapping("/{id}")
     public Jacke getJackeById(@PathVariable int id) {
-        return jacken.stream()
-                .filter(j -> j.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Jacke mit ID " + id + " nicht gefunden"));
-    }
-
-    // UPDATE
-    @PutMapping("/{id}")
-    public Jacke updateJacke(@PathVariable int id, @RequestBody Jacke updatedJacke) {
-        Jacke existingJacke = getJackeById(id);
-        existingJacke.setName(updatedJacke.getName());
-        existingJacke.setBrand(updatedJacke.getBrand());
-        existingJacke.setSize(updatedJacke.getSize());
-        existingJacke.setColor(updatedJacke.getColor());
-        existingJacke.setSeason(updatedJacke.getSeason());
-        existingJacke.setReleaseYear(updatedJacke.getReleaseYear());
-        return existingJacke;
-    }
-
-    // DELETE
-    @DeleteMapping("/{id}")
-    public String deleteJacke(@PathVariable int id) {
-        Jacke jacke = getJackeById(id);
-        jacken.remove(jacke);
-        return "Jacke mit ID " + id + " wurde gelöscht.";
-    }
-
-    // SUCHE - Nach Farbe
-    @GetMapping("/suche")
-    public List<Jacke> searchByColor(@RequestParam String color) {
-        List<Jacke> result = new ArrayList<>();
-        for (Jacke jacke : jacken) {
-            if (jacke.getColor().equalsIgnoreCase(color)) {
-                result.add(jacke);
+        for (int i = 0; i < jacken.size(); i++) {
+            Jacke jacke = jacken.get(i);
+            if (jacke.getId() == id) {
+                return jacke;
             }
         }
-        return result;
+        throw new IllegalArgumentException("Jacke mit ID " + id + " nicht gefunden");
+    }
+
+    // Nach Farbe suchen
+    @GetMapping("/search")
+    public List<Jacke> searchByColor(@RequestParam String color) {
+        List<Jacke> ergebnis = new ArrayList<>();
+        for (int i = 0; i < jacken.size(); i++) {
+            Jacke jacke = jacken.get(i);
+            if (jacke.getColor().equalsIgnoreCase(color)) {
+                ergebnis.add(jacke);
+            }
+        }
+        return ergebnis;
     }
 }
