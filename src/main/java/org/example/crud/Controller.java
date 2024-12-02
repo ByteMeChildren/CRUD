@@ -29,16 +29,16 @@ public class Controller {
     // Jacke updaten
 
     @PutMapping("/{id}")
-    public Jacke updateJacke(@PathVariable int id, @RequestBody Jacke neueDaten) {
+    public Jacke updateJacke(@PathVariable int id, @RequestBody Jacke updatedJacke) {
         for (int i = 0; i < jacken.size(); i++) {
             Jacke jacke = jacken.get(i);
             if (jacke.getId() == id) {
-                jacke.setName(neueDaten.getName());
-                jacke.setBrand(neueDaten.getBrand());
-                jacke.setSize(neueDaten.getSize());
-                jacke.setColor(neueDaten.getColor());
-                jacke.setSeason(neueDaten.getSeason());
-                jacke.setReleaseYear(neueDaten.getReleaseYear());
+                jacke.setName(updatedJacke.getName());
+                jacke.setBrand(updatedJacke.getBrand());
+                jacke.setSize(updatedJacke.getSize());
+                jacke.setColor(updatedJacke.getColor());
+                jacke.setSeason(updatedJacke.getSeason());
+                jacke.setReleaseYear(updatedJacke.getReleaseYear());
                 return jacke;
             }
         }
@@ -55,7 +55,7 @@ public class Controller {
                 return "Jacke mit ID " + id + " gelöscht";
             }
         }
-        throw new IllegalArgumentException("Jacke mit ID " + id + " nicht gefunden");
+        throw new IllegalArgumentException("Jacke mit ID: " + id + " nicht gefunden");
     }
 
     // Alle Jacken anzeigen
@@ -73,7 +73,7 @@ public class Controller {
                 return jacke;
             }
         }
-        throw new IllegalArgumentException("Jacke mit ID " + id + " nicht gefunden");
+        throw new IllegalArgumentException("Jacke mit ID: " + id + " nicht gefunden");
     }
 
     // Nach Farbe suchen
