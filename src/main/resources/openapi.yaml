@@ -1,0 +1,83 @@
+openapi: 3.0.1
+info:
+  title: Jacken CRUD API
+  description: API für die Verwaltung von Jacken.
+  version: "1.0"
+  contact:
+    name: Ihr Name
+    email: ihre-email@example.com
+    url: https://example.com
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+paths:
+  /jacken:
+    get:
+      summary: Gibt alle Jacken zurück
+      description: Ruft eine Liste aller gespeicherten Jacken ab.
+      responses:
+        "200":
+          description: Erfolgreiche Antwort - Liste der Jacken
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Jacke'
+    post:
+      summary: Erstellt eine neue Jacke
+      description: Fügt eine neue Jacke hinzu.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Jacke'
+      responses:
+        "201":
+          description: Jacke erfolgreich erstellt
+  /jacken/{id}:
+    get:
+      summary: Gibt eine Jacke basierend auf der ID zurück
+      description: Sucht eine Jacke mit der angegebenen ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Erfolgreiche Antwort - Gefundene Jacke
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Jacke'
+        "404":
+          description: Jacke nicht gefunden
+components:
+  schemas:
+    Jacke:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Winterjacke
+        brand:
+          type: string
+          example: Adidas
+        size:
+          type: string
+          example: L
+        color:
+          type: string
+          example: Blau
+        season:
+          type: string
+          example: Winter
+        releaseYear:
+          type: integer
+          example: 2023
