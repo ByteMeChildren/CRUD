@@ -34,8 +34,9 @@ paths:
             schema:
               $ref: '#/components/schemas/Jacke'
       responses:
-        "201":
+        "200": # 201 would be fine, but is not acc to your backend
           description: Jacke erfolgreich erstellt
+    # missing: GET /search
   /jacken/{id}:
     get:
       summary: Gibt eine Jacke basierend auf der ID zurück
@@ -44,6 +45,8 @@ paths:
         - name: id
           in: path
           required: true
+          example: 12
+          description: Die ID der Jacke.
           schema:
             type: integer
       responses:
@@ -53,14 +56,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Jacke'
-        "404":
+        "404": # ...does not exist
           description: Jacke nicht gefunden
+    # missing: DELETE
+    # missing: PUT
 components:
   schemas:
     Jacke:
       type: object
       properties:
         id:
+          readOnly: true
           type: integer
           example: 1
         name:
@@ -72,10 +78,11 @@ components:
         size:
           type: string
           example: L
+          enum: [XS, S, M, L, XL]
         color:
           type: string
           example: Blau
-        season:
+        season: # should be an enum
           type: string
           example: Winter
         releaseYear:

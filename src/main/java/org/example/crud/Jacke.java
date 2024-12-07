@@ -1,12 +1,13 @@
 package org.example.crud;
 
-import lombok.Data;
 import jakarta.persistence.Id;
 
-@Data//macht Getter/Setter/Konstructor für Dich
-public class Jacke
+import lombok.Data;
+
+@Data //macht Getter/Setter/Constructor für Dich
+public class Jacke // generell schreiben wir englischen Code: Jacket
 {
-    @Id//braucht es glaube ich nicht, aber ich mache es sicherheits halber
+    @Id//braucht es glaube ich nicht, aber ich mache es sicherheits halber -> nein braucht's nicht: Wir haben keine DB.
     private int id;
     private String name;
     private String brand;
@@ -23,5 +24,5 @@ enum Size
 
 enum Season
 {
-    Spring, Summer, Autumn, Winter
+    SPRING, SUMMER, AUTUMN, WINTER // (gemäss Sonar) enum Konstanten immer UPPERCASE
 }

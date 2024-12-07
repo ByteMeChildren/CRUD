@@ -1,12 +1,18 @@
 package org.example.crud;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class TestKlasse {
+
+    // A pure JUnit test. Nice, because it's fast but doesn't test too much.
+    // We would like to test the actual REST calls instead, using a WebTestClient.
 
     @Test
     void testCreateJacke() {
@@ -86,18 +92,18 @@ class TestKlasse {
         Controller controller = new Controller();
 
         //2 neue Jacken
-        Jacke jäckli1 = new Jacke();
-        jäckli1.setColor("Magenta");
-        controller.createJacke(jäckli1);
+        Jacke j1 = new Jacke();
+        j1.setColor("Magenta");
+        controller.createJacke(j1);
 
-        Jacke jäckli2 = new Jacke();
-        jäckli2.setColor("Blau");
-        controller.createJacke(jäckli2);
+        Jacke j2 = new Jacke();
+        j2.setColor("Blau");
+        controller.createJacke(j2);
 
         //nach Blau suchen
         List<Jacke> ergebnisse = controller.searchByColor("Blau");
         assertEquals(1, ergebnisse.size());
-        assertEquals("Blau", ergebnisse.get(0).getColor());
+        assertEquals("Blau", ergebnisse.getFirst().getColor());
 
         //Farbe suchen, die es nicht gibt
         List<Jacke> keineErgebnisse = controller.searchByColor("Grün");
